@@ -3,7 +3,7 @@ const effectStack = [];
 // 记录当前执行的副作用函数
 let activeEffect;
 
-export function effect(fn) {
+export function effect(fn, options = {}) {
     const effectFn = () => {
         // 以防用户自定义的函数出错，所以要 try catch
         try {
@@ -15,7 +15,14 @@ export function effect(fn) {
             activeEffect = effectStack[effectStack.length - 1];
         }
     };
-    effectFn();
+
+    if(!options.lazy) {     // 因为 computed 是缓存依赖函数的，等调用了值才执行依赖函数
+        effectFn();
+    }
+    
+    // 调度函数(computed)
+    effectFn.scheduler = options.scheduler;
+
     return effectFn;
 }
 
@@ -57,6 +64,10 @@ export function trigger(target, key) {
 
     // 能找得到，就把所有依赖函数都执行一遍
     deps.forEach(effectFn => {
-        effectFn();
+        if(effectFn.scheduler) {
+            effectFn.scheduler();    // 原视频应该有误，应该没有参数
+        }else {
+            effectFn();
+        }
     });
 }

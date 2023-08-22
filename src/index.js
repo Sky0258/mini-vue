@@ -1,17 +1,25 @@
-import { reactive } from "./reactive/reactive";
-import { effect } from "./reactive/effect";
-import { ref } from "./reactive/ref";
-import { computed } from "./reactive/computed";
-
-let nums = window.nums = ref(12);
-
-let k = window.k = computed({
-    get() {
-        console.log('get is change');
-        return nums.value * 2;
+import { render, h, Text, Fragment } from "./runtime";
+const vnode = h(
+    'div',
+    {
+        class: 'a b',
+        style: {
+            border: '1px solid',
+            fontSize: '14px',
+        },
+        onClick: () => console.log('click'),
+        id: 'foo',
+        checked: '',
+        custom: false,
     },
-    set(newValue) {
-        console.log('set change');
-        nums.value = newValue;
-    }
-})
+    [
+        h('ul',null, [
+            h('li', { style: { color: 'red'}} , 1),
+            h('li', null , 2),
+            h('li', { style: { color: 'blue'}} , 3),
+            h(Fragment, null, [h('li', null, '4') , h('li')]),
+            h('li', null ,[h(Text, null, 'hello world')]),
+        ])
+    ]
+);
+render(vnode, document.body);

@@ -25,7 +25,6 @@ export function reactive(target) {
     }
 
     
-
     const proxy = new Proxy(target, {
         get(target, key, receiver) {
             if (key === '__isReactive') {

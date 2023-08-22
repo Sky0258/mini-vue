@@ -45,7 +45,7 @@ export function track(target,key) {
         depsMap.set(key, (deps = new Set()));
     }
 
-    deps.add(activeEffect);  // 添加副作用函数 到 map 中
+    deps.add(activeEffect);  // 添加副作用函数 到 Set 中
 }
 
 // 相当于 track 的逆运算，（执行依赖）

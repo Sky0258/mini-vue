@@ -48,6 +48,8 @@ export function h(type, props, children) {
         type,
         props,
         children,
-        shapeFlag
+        shapeFlag,
+        el: null,
+        anchor: null, // 为 fragment 更新时插入，不会插入到末尾，设置一个标识从中间插入
     };
 }

@@ -49,7 +49,7 @@ export function h(type, props, children) {
         props,
         children,
         shapeFlag,
-        el: null,
+        el: null,   // 标记 vnode 的真实的 dom 结点
         anchor: null, // 为 fragment 更新时插入，不会插入到末尾，设置一个标识从中间插入
     };
 }

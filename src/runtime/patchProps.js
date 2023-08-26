@@ -30,6 +30,10 @@ export function patchProps(oldProps, newProps, el) {
 
     // 不相等则遍历对象中的每个属性，使用 patchDomProp 进行比较
     for (const key in newProps) {
+        if(key === 'key') {   // key 属性不用判断，特殊
+            continue;
+        }
+
         const next = newProps[key];
         const prev = newProps[key];
 
@@ -40,7 +44,7 @@ export function patchProps(oldProps, newProps, el) {
 
     // 移除掉旧 props 中有而新 props 中没有的属性
     for (const key in oldProps) {
-        if (newProps[key] == null) {
+        if (key !== 'key' && newProps[key] == null) {
             patchDomProp(oldProps[key], null, key, el);
         }
     }

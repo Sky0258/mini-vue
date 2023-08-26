@@ -51,5 +51,6 @@ export function h(type, props, children) {
         shapeFlag,
         el: null,   // 标记 vnode 的真实的 dom 结点
         anchor: null, // 为 fragment 更新时插入，不会插入到末尾，设置一个标识从中间插入
+        key: props && props.key     // 用来更直观简单的判断两个结点是否为同一个结点（相等）
     };
 }

@@ -345,15 +345,17 @@ function patchKeyedChildren(c1, c2, container, anchor) {
         let maxNewIndexSoFar = 0;
 
         const map = new Map();   // map 记录旧结点信息
-        c1.forEach((prev, j) => {
-            map.set(prev.key, { prev,j })
-        })
+        
+        for(let j = i;j <= el;j++) {
+            const prev = c1[j];
+            map.set(prev.key, { prev, j });
+        }
 
         const source = new Array(e2 - i + 1).fill(-1);  // source 记录中间乱序部分 新结点在 旧结点数组中的下标
         let move = false;    // 判断是否真的需要移动 只有当 j < maxNewIndexSoFar 下标开始下降的时候才需要移动
         const toMounted = [];     // 特例：当新结点数组都是升序的，但是中间有结点需要插入，由于都是升序，所以 move = false,不会进入到，后面的最长上升子序列算法中
-        for (let k = 0; k < c2.length; k++) {
-            const next = c2[k];
+        for (let k = 0; k < source.length; k++) {
+            const next = c2[k + i];
             if (map.has(next.key)) {
                 const { prev,j } = map.get(next.key);
                 patch(prev, next, container, anchor);
@@ -413,7 +415,45 @@ function patchKeyedChildren(c1, c2, container, anchor) {
     }
 }
 
-// 最长上升子序列算法
-function getSequence() {
+// 力扣题目：最长递增子序列
+function getSequence(nums) {
+    const arr = [nums[0]];
+    const position = [0];   // position 记录每个元素在 arr 中出现的位置
+    // 从后往前找第一个递减的位置，就是子序列的值的下标  
+    // position: [ 0, 0, 0, 1, 1, 2, 3, 3] 从后往前找第一个 3 第一个 2 ... 对应的下标就是子序列元素下标
 
-}
+    for(let i = 1;i < nums.length;i++) {
+        if(nums[i] === -1) {
+            continue;      // 说明是要 mount 添加的结点
+        }
+        if(nums[i] > arr[arr.length - 1]) {
+            arr.push(nums[i]);
+            position.push(arr.length - 1);
+        } else {
+            let l = 0,r = arr.length - 1;
+            while(l <= r) {
+                let mid = Math.floor((l + r) / 2);
+                if(arr[mid] < nums[i]) {
+                    l = mid + 1;
+                }else if(arr[mid] > nums[i]){
+                    r = mid - 1;
+                }else {
+                    l = mid;
+                    break;
+                }
+            }
+            arr[l] = nums[i];
+            position.push(l);
+        }
+    }
+
+    let cur = position.length;
+    for(let i = position.length - 1;i >= 0 && cur > -1;i--) {
+        if(position[i] == cur) {
+            arr[cur] = nums[i];
+            cur--;
+        }
+    }
+    
+    return arr;    // 返回子序列真实值
+};

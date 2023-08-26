@@ -35,16 +35,17 @@ export function patchProps(oldProps, newProps, el) {
         }
 
         const next = newProps[key];
-        const prev = newProps[key];
+        const prev = oldProps[key];
 
         if (prev !== next) {
             patchDomProp(prev, next, key, el);
         }
     }
 
+    
     // 移除掉旧 props 中有而新 props 中没有的属性
     for (const key in oldProps) {
-        if (key !== 'key' && newProps[key] == null) {
+        if (key !== 'key' && !(key in newProps)) {
             patchDomProp(oldProps[key], null, key, el);
         }
     }
@@ -67,7 +68,7 @@ function patchDomProp(prev, next, key, el) {
                 // 删除掉，next 中没有而 pre 中有的 style 属性
                 if (prev) {
                     for (const styleName in prev) {
-                        if (next[styleName] === null) {
+                        if (next[styleName] === null || next[styleName] === undefined) {
                             el.style[styleName] = '';
                         }
                     }
@@ -75,9 +76,8 @@ function patchDomProp(prev, next, key, el) {
             }
             break;
         default:
-            if (/^on[A-Z]/.test(key)) {
+            if (/^on[^a-z]/.test(key)) {
                 // 情况1：判断事件
-
                 const eventName = key.slice(2).toLowerCase();
                 // 直接把旧事件移除，然后添加新事件
                 if (prev) {

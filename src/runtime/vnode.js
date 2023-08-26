@@ -1,6 +1,7 @@
 import {
     isArray,
     isNumber,
+    isObject,
     isString
 } from "../utils";
 
@@ -49,8 +50,23 @@ export function h(type, props, children) {
         props,
         children,
         shapeFlag,
-        el: null,   // 标记 vnode 的真实的 dom 结点
-        anchor: null, // 为 fragment 更新时插入，不会插入到末尾，设置一个标识从中间插入
-        key: props && props.key     // 用来更直观简单的判断两个结点是否为同一个结点（相等）
+        el: null,     // 指向 vnode 的真实的 dom 结点
+        anchor: null,   // 为 fragment 更新时插入，不会插入到末尾，设置一个标识从中间插入
+        key: props && props.key,     // 用来更直观简单的判断两个结点是否为同一个结点（相等）
+        component: null     // 专门用于存储组件的实例
     };
+}
+
+// 防止 render 返回值不是 vnode 出错，判断各种类型返回值进行处理，使得一定返回 vnode 结点
+export function normalizeVnode(result) {
+    if(isArray(result)) {
+        return h(Fragment, null, result);
+    }
+    if(isObject(result)) {
+        // 说明已经是 vnode 结点了
+        return result;
+    }
+    
+    // 剩下的只能是 string number
+    return h(Text, null, result.toString());
 }

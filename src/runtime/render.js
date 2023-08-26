@@ -4,9 +4,8 @@ import {
 import {
     patchProps
 } from "./patchProps";
-import {
-    doc
-} from "prettier";
+
+import { mountComponent } from './component'
 
 export function render(vnode, container) {
     // 对比前后结点
@@ -40,10 +39,6 @@ function unmount(vnode) {
     }
 }
 
-function unmountComponent(vnode) {
-    // todo
-}
-
 function unmountFragment(vnode) {
     let {
         el: cur,
@@ -64,6 +59,10 @@ function unmountChildren(children) {
     children.forEach((child) => {
         unmount(child);
     })
+}
+
+function unmountComponent(vnode) {
+    unmount(vnode.component.subTree);
 }
 
 // 更新操作
@@ -95,7 +94,19 @@ function isSameVNode(n1, n2) {
 }
 
 function processComponent(n1, n2, container, anchor) {
-    // todo
+    if(n1) {
+        // 前面还要判断一下是否真的需要更新  shouldUpdateComponent  Vue是内置，内部自己判断的
+        // 因为如果真正用到的那个部分 props 没有更改的话，其实不用被动更新
+        updateComponent(n1,n2);
+    } else {
+        mountComponent(n2, container, anchor, patch);
+    }
+}
+
+function updateComponent(n1,n2) {
+    n2.component = n1.component;  // 先继承 n1 的 component, 接下来才可以调用 实例上的 update 函数
+    n2.component.next = n2;
+    n2.component.update();   // 没有传参过程，所以到 update 中要 vnode 要换成 n2
 }
 
 function processText(n1, n2, container, anchor) {

@@ -1,4 +1,11 @@
-import { render, h, Text, Fragment } from "./runtime";
+import {
+    render,
+    h,
+    Text,
+    Fragment
+} from "./runtime";
+
+import { ref } from './reactive'
 // const vnode = h(
 //     'div',
 //     {
@@ -23,24 +30,33 @@ import { render, h, Text, Fragment } from "./runtime";
 //     ]
 // );
 // render(vnode, document.body);
-render(
-    h('ul', null, [
-        h('li', null, 'first'),
-        h(Fragment, null, []),
-        h('li', null, 'last'),
-    ]),
-    document.body
-);
 
-setTimeout(() => {
-    render(
-        h('ul', null, [
-            h('li', null, 'first'),
-            h(Fragment, null, [
-                h('li', null, 'middle'),
-            ]),
-            h('li', null, 'last'),
-        ]),
-        document.body
-    )
-},3000)
+// render(
+//     h('ul', null, [
+//         h('li', null, 'first'),
+//         h(Fragment, null, []),
+//         h('li', null, 'last'),
+//     ]),
+//     document.body
+// );
+
+const Comp = {
+    setup() {
+        const count = ref(0);
+        const add = () => count.value++;
+        return {
+            count,
+            add,
+        };
+    },
+    render(ctx) {
+        return [
+            h('div', null, ctx.count.value),
+            h('button', {
+                onClick: ctx.add,
+            },'add')
+        ]
+    }
+}
+const vnode = h(Comp);
+render(vnode, document.body);

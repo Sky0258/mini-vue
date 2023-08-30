@@ -12,14 +12,13 @@
 // const vnode = h(Component, vnodeProps);   // Component 是 type (代替之前的 'div' 这些标签)
 // render(vnode, document.body);
 
+// updateProps()   这里是 initProps()
 
 import {
     reactive,
     effect
 } from '../reactive'
-import {
-    patchProps
-} from './patchProps';
+import { queueJob } from './scheduler';
 import {
     normalizeVnode
 } from './vnode';
@@ -110,6 +109,8 @@ export function mountComponent(vnode, container, anchor, patch) {
             patch(prev, subTree, container, anchor);
             vnode.el = subTree.el;
         }
+    },{
+        scheduler: queueJob,   // 调度函数，复用 computed 的调度，让它是 lazy 的，调度结束后再进行更新，这样可以避免，每次值发生变化就得重新 render 一遍
     })
 }
 

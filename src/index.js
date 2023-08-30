@@ -2,7 +2,8 @@ import {
     render,
     h,
     Text,
-    Fragment
+    Fragment,
+    createApp
 } from "./runtime";
 
 import { ref } from './reactive'
@@ -40,16 +41,47 @@ import { ref } from './reactive'
 //     document.body
 // );
 
-const Comp = {
+// const Comp = {
+//     setup() {
+//         const count = ref(0);
+//         const add = () => {
+//             count.value++;
+//             count.value++;
+//             count.value++;
+//         }
+//         return {
+//             count,
+//             add,
+//         };
+//     },
+//     render(ctx) {
+//         console.log('render');
+//         return [
+//             h('div', null, ctx.count.value),
+//             h('button', {
+//                 onClick: ctx.add,
+//             },'add')
+//         ]
+//     }
+// }
+// const vnode = h(Comp);
+// render(vnode, document.body);
+
+createApp({
     setup() {
         const count = ref(0);
-        const add = () => count.value++;
+        const add = () => {
+            count.value++;
+            count.value++;
+            count.value++;
+        }
         return {
             count,
             add,
         };
     },
     render(ctx) {
+        console.log('render');
         return [
             h('div', null, ctx.count.value),
             h('button', {
@@ -57,6 +89,4 @@ const Comp = {
             },'add')
         ]
     }
-}
-const vnode = h(Comp);
-render(vnode, document.body);
+}).mount(document.body);

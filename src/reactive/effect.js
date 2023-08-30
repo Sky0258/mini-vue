@@ -65,7 +65,7 @@ export function trigger(target, key) {
     // 能找得到，就把所有依赖函数都执行一遍
     deps.forEach(effectFn => {
         if(effectFn.scheduler) {
-            effectFn.scheduler();    // 原视频应该有误，应该没有参数
+            effectFn.scheduler(effectFn); 
         }else {
             effectFn();
         }

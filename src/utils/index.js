@@ -29,3 +29,9 @@ export function isBoolean(target) {
 export function hasChanged(oldValue, value) {
     return oldValue !== value && !(Number.isNaN(oldValue) && Number.isNaN(value));  // 新老值不相等，且两个值都不能为 NaN 因为 NaN !== NaN 所以一定放回的是改变
 }
+
+// 把字符串转换为驼峰形式
+// my-name -> myName
+export function camelize(str) {
+    return str.replace(/-(\w)/g, (_, c) => ( c ? c.toUpperCase() : ''));
+}

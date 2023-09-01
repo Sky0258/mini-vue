@@ -7,6 +7,7 @@ import {
 } from "./runtime";
 
 import { ref } from './reactive'
+import { parse } from "./compiler";
 // const vnode = h(
 //     'div',
 //     {
@@ -67,26 +68,30 @@ import { ref } from './reactive'
 // const vnode = h(Comp);
 // render(vnode, document.body);
 
-createApp({
-    setup() {
-        const count = ref(0);
-        const add = () => {
-            count.value++;
-            count.value++;
-            count.value++;
-        }
-        return {
-            count,
-            add,
-        };
-    },
-    render(ctx) {
-        console.log('render');
-        return [
-            h('div', null, ctx.count.value),
-            h('button', {
-                onClick: ctx.add,
-            },'add')
-        ]
-    }
-}).mount(document.body);
+// createApp({
+//     setup() {
+//         const count = ref(0);
+//         const add = () => {
+//             count.value++;
+//             count.value++;
+//             count.value++;
+//         }
+//         return {
+//             count,
+//             add,
+//         };
+//     },
+//     render(ctx) {
+//         console.log('render');
+//         return [
+//             h('div', null, ctx.count.value),
+//             h('button', {
+//                 onClick: ctx.add,
+//             },'add')
+//         ]
+//     }
+// }).mount(document.body);
+
+// console.log('121212');
+console.log(parse('<span id="foo" v-if="ok">hello {{ name }}</span>'));
+

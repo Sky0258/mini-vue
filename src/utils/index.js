@@ -35,3 +35,8 @@ export function hasChanged(oldValue, value) {
 export function camelize(str) {
     return str.replace(/-(\w)/g, (_, c) => ( c ? c.toUpperCase() : ''));
 }
+
+// 首字母大写
+export function capitalize(str) {
+    return str[0].toUpperCase() + str.slice(1);
+}

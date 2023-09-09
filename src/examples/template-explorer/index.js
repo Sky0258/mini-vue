@@ -1,6 +1,10 @@
 // eslint-disable-next-line no-undef
 const { effect, compile } = MiniVue;
 
+window.format = function (code) {
+  return code;
+};
+
 const sharedEditorOptions = {
   fontSize: 14,
   scrollBeyondLastLine: false,

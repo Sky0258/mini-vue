@@ -58,7 +58,7 @@ function parseChildren(context) {
                 // <span>a</span>
                 // <span>b</span>
                 if(!prev || !next || (prev.type === NodeTypes.ELEMENT && next.type === NodeTypes.ELEMENT && /[\r\n]/.test(node.content))) {
-                    removedWhitespaces = true;
+                    removedWhiteSpaces = true;
                     nodes[i] = null;
                 } else {
                     // 如果没有换行符，那就压缩空白节点为一个空格  例如情况为： <span>a</span>     <span>b</span>  中间还是会保留一个空格的
@@ -150,10 +150,10 @@ function parseAttributes(context) {
 
     while(context.source.length && !context.source.startsWith('>') && !context.source.startsWith('/>')) {
         let attr = parseAttribute(context);        // 解析单个属性
-        if(attr.type === NodeTypes.DIRECTIVE) {
-            directives.push(attr);
-        } else {
+        if(attr.type === NodeTypes.ATTRIBUTE) {
             props.push(attr);
+        } else {
+            directives.push(attr);
         }
     }
     return { props, directives };
@@ -180,10 +180,10 @@ function parseAttribute(context) {
         let dirName, argContent;
 
         if(name[0] === ':') {
-            dirName = 'bind',
+            dirName = 'bind';
             argContent = name.slice(1);   // 去除掉 : 之后的都是指令名
         } else if (name[0] === '@') {
-            dirName = 'on',
+            dirName = 'on';
             argContent = name.slice(1);
         } else if (name.startsWith('v-')) {
             [dirName, argContent] = name.slice(2).split(':');
@@ -238,8 +238,8 @@ function parseText(context) {
     let endIndex = context.source.length;
 
     for(let i = 0;i < endTokens.length; i++) {
-        let index = context.source.indexOf(endTokens[i]);
-        if(index < endIndex) {
+        let index = context.source.indexOf(endTokens[i],1);
+        if(index < endIndex && index !== -1) {
             endIndex = index;
         }
     }

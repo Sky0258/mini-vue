@@ -14,10 +14,11 @@
 
 // updateProps()   这里是 initProps()
 
+import { compile } from '../compiler';
 import {
     reactive,
     effect
-} from '../reactive'
+} from '../reactivity'
 import { queueJob } from './scheduler';
 import {
     normalizeVnode
@@ -74,6 +75,16 @@ export function mountComponent(vnode, container, anchor, patch) {
     instance.ctx = {
         ...instance.props,
         ...instance.setupState
+    }
+    
+    if(!Component.render && Component.template) {
+        let { template } = Component;
+        if(template[0] === '#') {
+            const el = document.querySelector(template);
+            template = el ? el.innerHTML : '';
+        }
+        const code = compile(template);
+        Component.render = new Function('ctx', code);
     }
 
     // 通过 effct 包裹，这样一旦有响应式变量发生改变的时候，都会触发 update 函数

@@ -1,97 +1,24 @@
+import { compile } from './compiler/compile';
 import {
-    render,
-    h,
-    Text,
-    Fragment,
-    createApp
-} from "./runtime";
+  createApp,
+  render,
+  h,
+  Text,
+  Fragment,
+  nextTick,
+} from './runtime';
+import { reactive, ref, computed, effect } from './reactivity';
 
-import { ref } from './reactive'
-import { parse } from "./compiler";
-// const vnode = h(
-//     'div',
-//     {
-//         class: 'a b',
-//         style: {
-//             border: '1px solid',
-//             fontSize: '14px',
-//         },
-//         onClick: () => console.log('click'),
-//         id: 'foo',
-//         checked: '',
-//         custom: false,
-//     },
-//     [
-//         h('ul',null, [
-//             h('li', { style: { color: 'red'}} , 1),
-//             h('li', null , 2),
-//             h('li', { style: { color: 'blue'}} , 3),
-//             h(Fragment, null, [h('li', null, '4') , h('li')]),
-//             h('li', null ,[h(Text, null, 'hello world')]),
-//         ])
-//     ]
-// );
-// render(vnode, document.body);
-
-// render(
-//     h('ul', null, [
-//         h('li', null, 'first'),
-//         h(Fragment, null, []),
-//         h('li', null, 'last'),
-//     ]),
-//     document.body
-// );
-
-// const Comp = {
-//     setup() {
-//         const count = ref(0);
-//         const add = () => {
-//             count.value++;
-//             count.value++;
-//             count.value++;
-//         }
-//         return {
-//             count,
-//             add,
-//         };
-//     },
-//     render(ctx) {
-//         console.log('render');
-//         return [
-//             h('div', null, ctx.count.value),
-//             h('button', {
-//                 onClick: ctx.add,
-//             },'add')
-//         ]
-//     }
-// }
-// const vnode = h(Comp);
-// render(vnode, document.body);
-
-// createApp({
-//     setup() {
-//         const count = ref(0);
-//         const add = () => {
-//             count.value++;
-//             count.value++;
-//             count.value++;
-//         }
-//         return {
-//             count,
-//             add,
-//         };
-//     },
-//     render(ctx) {
-//         console.log('render');
-//         return [
-//             h('div', null, ctx.count.value),
-//             h('button', {
-//                 onClick: ctx.add,
-//             },'add')
-//         ]
-//     }
-// }).mount(document.body);
-
-// console.log('121212');
-console.log(parse('<span id="foo" v-if="ok">hello {{ name }}</span>'));
-
+export const MiniVue = (window.MiniVue = {
+  createApp,
+  render,
+  h,
+  Text,
+  Fragment,
+  nextTick,
+  reactive,
+  ref,
+  computed,
+  effect,
+  compile,
+});

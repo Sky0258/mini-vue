@@ -5,11 +5,46 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    
 </head>
-
 <body>
-
+    <div id="app">
+        Counter1212333333333333
+    <div>{{count.value}}</div>
+    <button @click="add">click</button>
+    </div>
 </body>
 <script src="../../dist/mini-vue.js"></script>
+    <script>
+        const { createApp, ref } = MiniVue;
+
+        createApp({
+            setup() {
+                const count = ref(0);
+                const add = () => count.value++;
+                return {
+                    count, add
+                }
+            }
+        }).mount('#app')
+
+//         createApp({
+//           template: `
+//             Counter
+//             <div>{{count.value}}</div>
+//             <button @click="add">click</button>
+//             `,
+//     setup() {
+//         const count = ref(0);
+//         const add = () => {
+//             count.value++;
+//             count.value++;
+//             count.value++;
+//         }
+//         return {
+//             count,
+//             add,
+//         };
+//     },
+// }).mount(document.body);
+    </script>
 </html>

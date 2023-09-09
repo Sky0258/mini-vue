@@ -26,16 +26,15 @@
         },
       });
     </script>
-    <script type="module">
-      import prettier from '../node_modules/prettier/esm/standalone.mjs';
-      import babel from '../node_modules/prettier/esm/parser-babel.mjs';
+    <script>
+      // import prettier from '../node_modules/prettier/esm/standalone.mjs';
+      // import babel from '../node_modules/prettier/esm/parser-babel.mjs';
 
       window.format = function (code) {
-        return prettier.format(code, {
-          plugins: [babel],
-        });
+        return code;
       };
     </script>
+    <!-- <script type="module" src="./main.js"></script> -->
     <script src="/dist/mini-vue.js"></script>
     <script src="theme.js"></script>
     <script src="index.js"></script>

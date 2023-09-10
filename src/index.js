@@ -6,6 +6,8 @@ import {
   Text,
   Fragment,
   nextTick,
+  renderList,
+  resolveComponent
 } from './runtime';
 import { reactive, ref, computed, effect } from './reactivity';
 
@@ -21,4 +23,6 @@ export const MiniVue = (window.MiniVue = {
   computed,
   effect,
   compile,
+  renderList,
+  resolveComponent
 });

@@ -6,6 +6,7 @@ import { isVoidTag, isNativeTag } from "./index";
 export function parse(content) {
     const context = createParserContext(content);   // 配置上下文
     const children = parseChildren(context);
+    console.log(children);
     return createRoot(children);
 }
 

@@ -1,7 +1,9 @@
 import { h, render } from '.'
-import { isString } from "../utils"
+import { camelize, capitalize, isString } from "../utils"
 
+let components;
 export function createApp(rootComponent) {
+    components = rootComponent.components;
     const app = {
         mount(rootContainer) {
             if(isString(rootContainer)) {
@@ -19,4 +21,11 @@ export function createApp(rootComponent) {
     }
 
     return app;
+}
+
+// 处理组件，组件名可以为 tree-item treeItem TreeItem
+export function resolveComponent(name) {
+    return (
+        components && (components[name] || components[camelize(name)] || components[capitalize(camelize(name))])
+    );
 }
